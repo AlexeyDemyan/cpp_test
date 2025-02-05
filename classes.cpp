@@ -85,6 +85,50 @@ public:
     }
 };
 
+// Here's something I've never seen before - member initializer list to assign values more elegantly:
+
+class MyElegantClass
+{
+public:
+    int a, b;
+
+    MyElegantClass(int aaa, int bbb)
+        //  here I am using both types of brackets to see that there is no difference:
+        : a(aaa), b{bbb}
+    {
+        std::cout << "normal constructor invoked \n";
+    }
+
+    MyElegantClass(const MyElegantClass &rhs) : a{rhs.a}, b{rhs.b}
+    {
+        std::cout << "user-defined copy constructor invoked with these values: " << a << " -- " << b << '\n';
+    }
+};
+
+// In default copy constructor we must create deep copies of members
+// Ghax for some member types the normal copy does not copy correctly
+
+class MyDeepCopyClass
+{
+private:
+    int x;
+    int *p;
+
+public:
+    MyDeepCopyClass(int xx, int pp) : x{xx}, p{new int{pp}}
+    {
+    }
+    MyDeepCopyClass(const MyDeepCopyClass &rhs) : x{rhs.x}, p{new int{*rhs.p}}
+    {
+        std::cout << "User defined copy constructo invoked \n";
+    }
+};
+
+// There is also a crazy thing called Copy Constructor,
+// Where you can initialize an object with another object of the same class;
+
+// I'm using normal brackets as opposed to curly ones, but looks to give the same result
+
 int main()
 {
     // hmmm, to create an instance of a class we don't need new, just hekk:
@@ -99,4 +143,16 @@ int main()
     MyClassWithLessUselessConstructor lessuseless(3, 5);
 
     std::cout << "Let's check value of a in the instance of a class: " << lessuseless.a << '\n';
+
+    MyElegantClass eleg{7, 8};
+
+    std::cout << "Here are the values assigned by the constructor: " << eleg.a << " -- " << eleg.b << '\n';
+
+    // Doing a copy constructor:
+
+    MyElegantClass anothereleg = eleg;
+
+    std::cout << "value of a in anothereleg object: " << anothereleg.a << '\n';
+
+    // Doing a user-invoked copy constructor:
 }
