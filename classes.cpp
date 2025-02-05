@@ -43,8 +43,24 @@ struct MyFirstStruct
     int x;
 };
 
+// Defining a class with all members having public access:
+
+class MyAllPublicClass
+{
+public:
+    int x;
+    void printX()
+    {
+        std::cout << "Here's x:" << x << '\n';
+    }
+};
+
 int main()
 {
     // hmmm, to create an instance of a class we don't need new, just hekk:
     MyFirstClass a;
+
+    MyAllPublicClass mypub;
+    mypub.x = 213;
+    mypub.printX();
 }
