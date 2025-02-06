@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 class MyFirstClass
 {
@@ -129,6 +130,47 @@ public:
 
 // I'm using normal brackets as opposed to curly ones, but looks to give the same result
 
+// It's also possible to first create and objec, and the copy-assign it:
+// MyClass copyfrom;
+// MyClass copyto;
+// copyto = copyfrom;
+
+// And here's a user-defined copy assignment operator:
+
+class MyCopyAssClass
+{
+public:
+    MyCopyAssClass &operator=(const MyCopyAssClass &rhs)
+    {
+        // implementing copy logic here
+        return *this;
+    }
+};
+
+class MyMoveClass
+{
+    // Compiler will provide a generated move constructor in case it's missing
+private:
+    int x;
+    std::string s;
+
+public:
+    // making user-provided constructor:
+    MyMoveClass(int xx, std::string ss) : x{xx}, s{ss} {}
+    MyMoveClass(MyMoveClass &&rhs) : x{std::move(rhs.x)}, s{std::move(rhs.s)}
+    {
+        std::cout << "Move contructor invoked \n";
+    }
+    // Let me try creating move assignment operator:
+    MyMoveClass &operator=(MyMoveClass &&otherobject)
+    {
+        std::cout << "Invoking move assignment operator \n";
+        x = std::move(otherobject.x);
+        s = std::move(otherobject.s);
+        return *this;
+    }
+};
+
 int main()
 {
     // hmmm, to create an instance of a class we don't need new, just hekk:
@@ -154,5 +196,12 @@ int main()
 
     std::cout << "value of a in anothereleg object: " << anothereleg.a << '\n';
 
-    // Doing a user-invoked copy constructor:
+    // Doing a move constructor:
+
+    MyMoveClass o1{69, "Random ssstring"};
+    MyMoveClass o2 = std::move(o1);
+    
+    MyMoveClass o3(55, "Another ssstring");
+    MyMoveClass o4(555, "Somethign else ehehehe");
+    o4 = std::move(o3);
 }
