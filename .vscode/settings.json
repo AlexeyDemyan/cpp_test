@@ -65,6 +65,9 @@
         "numbers": "cpp",
         "span": "cpp",
         "text_encoding": "cpp",
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "cstdarg": "cpp",
+        "set": "cpp"
+    },
+    "dotnet.defaultSolution": "ConsoleApp1.sln"
 }
